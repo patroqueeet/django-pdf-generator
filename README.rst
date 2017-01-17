@@ -10,6 +10,7 @@ Requirements
 
 -  Python (2.7) (Need to be tested for 3.x)
 -  Django (1.10, 1.9) (Need to be tested for previous versions)
+-  PhantomJS
 
 Installation
 ------------
@@ -20,59 +21,79 @@ Install using ``pip`` :
 
 Add ``pdf_generator`` to your INSTALLED\_APPS setting.
 
-::
+.. code:: python
 
-    INSTALLED_APPS = (
-        ...
-        'pdf_generator',
-    )
+        INSTALLED_APPS = (
+            ...
+            'pdf_generator',
+        )
+
+Put phantomjs binary on your path or set the path manually in your
+settings using ``PHANTOMJS_BIN_PATH`` settings (see below).
 
 Example
 -------
 
-Generate a pdf from an url and save it to database, or retrieve it as a
-ContentFile, or return it inside an HttpResponse :
+Generate a PDF with PDFGenerator class
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-::
+Generate a pdf from an url
 
-    from pdf_generator.generators import PDFGenerator
+.. code:: python
 
-    pdf = PDFGenerator(url="https://github.com/charlesthk/django-pdf-generator",
+        from pdf_generator.generators import PDFGenerator
 
-    # Save it to database and retrieve a PdfDoc Object (database):
-    pdf.save(
-            filename='pdf_generator',
-            title="pdf_generator on github",
-            description="Convert HTML to pdf with django using phantomjs")
+        pdf = PDFGenerator(url="https://github.com/charlesthk/django-pdf-generator",
 
-    # Get the PDf as a Django ContentFile named 'my_pdf_file.pdf' :
-    pdf_content_file = pdf.get_content_file('my_pdf_file') 
+Save it to the database using PdfDoc models :
 
-    # Return a Django HttpResponse with the PDF Attached named 'my_pdf_file.pdf':
-    return pdf.get_http_response('my_pdf_file')
+.. code:: python
+
+        pdf.save(
+                filename='pdf_generator',
+                title="pdf_generator on github",
+                description="Convert HTML to pdf with django using phantomjs")
+
+Get the PDf as a Django ContentFile named 'my\_pdf\_file.pdf' :
+
+.. code:: python
+
+        pdf_content_file = pdf.get_content_file('my_pdf_file') 
+
+        # Return a Django HttpResponse with the PDF Attached named 'my_pdf_file.pdf':
+        return pdf.get_http_response('my_pdf_file')
+
+Return a Django HttpResponse with the PDF Attached named
+'my\_pdf\_file.pdf':
+
+.. code:: python
+
+        return pdf.get_http_response('my_pdf_file')
 
 Generate a pdf just like Django ``render`` function :
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 urls.py
 
-::
+.. code:: python
 
-    url(r'^invoice$', views.invoice, name='invoice'),
+        url(r'^invoice$', views.invoice, name='invoice'),
 
 views.py
 
-::
+.. code:: python
 
-    from pdf_generator.renderers import render_pdf
+        from pdf_generator.renderers import render_pdf
 
-    def invoice(request):
-        """
-        Render an invoice
-        The invoice.pdf file is returned
-        """
-        return render_pdf('invoice', request, 'front/invoice.html')
+        def invoice(request):
+            """
+            Render an invoice
+            The invoice.pdf file is returned
+            """
+            return render_pdf('invoice', request, 'front/invoice.html')
 
-Juste add ``?html=1`` to view the HTML instead of getting the pdf file
+Juste add ``?html=1`` to the url to view the HTML instead of getting the
+pdf file.
 
 ``PDFGenerator`` options
 ------------------------
