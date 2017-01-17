@@ -16,20 +16,16 @@ validate_url = URLValidator(schemes=['https', 'http'])
 
 class PDFGenerator(object):
 
-	def __init__(self, url, timeout=1000, page_size='A4', landscape=0, 
-				 print_background=1, margins_type=1, script=pdf_settings.DEFAULT_RENDER_SCRIPT,
-				 temp_dir=pdf_settings.TEMP_DIR):
+	def __init__(self, url, paperformat='A4', zoom=1, script=pdf_settings.DEFAULT_RASTERIZE_SCRIPT,
+				 temp_dir=pdf_settings.DEFAULT_TEMP_DIR):
 		validate_url(url)
+		self.script = script
+		self.temp_dir = temp_dir
 		self.url = url
 		self.filename = self.__get_random_filename()
 		self.filepath = self.__get_filepath()
-		self.timeout = timeout
-		self.page_size = page_size
-		self.landscape = landscape
-		self.print_background = print_background
-		self.margins_type = margins_type
-		self.script = script
-		self.temp_dir = temp_dir
+		self.paperformat = paperformat
+		self.zoom = zoom
 		self.pdf_data = None
 		self.__generate()
 		self.__set_pdf_data()
@@ -42,34 +38,21 @@ class PDFGenerator(object):
 
 
 	def __get_filepath(self):
-		return os.path.join(pdf_settings.TEMP_DIR, self.filename)
+		return os.path.join(self.temp_dir, self.filename)
 
 
 	def __generate(self):
 		"""
 		call the following command:
-			node render_pdf.js [url] [filepath] 
-				--timeout [timeout]
-				--pageSize [page_size]
-				--landscape [landscape]
-				--printBackground [print_background]
-				--marginsType [margins_type]
+			phantomjs rasterize.js URL filename [paperwidth*paperheight|paperformat] [zoom]
 		"""
 		command = [
-			pdf_settings.NODE_PATH,
+			pdf_settings.PHANTOMJS_BIN_PATH,
 			self.script,
 			self.url,
 			self.filepath,
-			'--timeout',
-			str(self.timeout),
-			'--pageSize',
-			self.page_size,
-			'--landscape',
-			str(self.landscape),
-			'--printBackground',
-			str(self.print_background),
-			'--marginsType',
-			str(self.margins_type)
+			self.paperformat,
+			str(self.zoom)
 		]
 		return subprocess.call(command)
 

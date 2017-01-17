@@ -1,4 +1,4 @@
-[![django-pdf-generator v0.1.10 on PyPi](https://img.shields.io/badge/pypi-0.1.10-green.svg)](https://pypi.python.org/pypi/django-pdf-generator)
+[![django-pdf-generator v0.1.0 on PyPi](https://img.shields.io/badge/pypi-0.1.0-green.svg)](https://pypi.python.org/pypi/django-pdf-generator)
 ![MIT license](https://img.shields.io/badge/licence-MIT-blue.svg)
 ![Stable](https://img.shields.io/badge/status-stable-green.svg)
 
@@ -42,7 +42,7 @@ Generate a pdf from an url and save it to database, or retrieve it as a ContentF
 	pdf.save(
 			filename='pdf_generator',
 			title="pdf_generator on github",
-			description="Convert HTML to pdf with django using nightmare")
+			description="Convert HTML to pdf with django using phantomjs")
 
 	# Get the PDf as a Django ContentFile named 'my_pdf_file.pdf' :
 	pdf_content_file = pdf.get_content_file('my_pdf_file') 
@@ -51,21 +51,42 @@ Generate a pdf from an url and save it to database, or retrieve it as a ContentF
 	return pdf.get_http_response('my_pdf_file')
 
 
+Generate a pdf just like Django `render` function :
+
+urls.py
+
+
+    url(r'^invoice$', views.invoice, name='invoice'),
+
+
+views.py
+
+
+    from pdf_generator.renderers import render_pdf
+
+    def invoice(request):
+        """
+        Render an invoice
+        The invoice.pdf file is returned
+        """
+        return render_pdf('invoice', request, 'front/invoice.html')
+
+
+Juste add `?html=1` to view the HTML instead of getting the pdf file
+
+
 ## `PDFGenerator` options
 
 The `PDFGenerator` class accepts the following arguments :
 
 + url				[required]
-+ timeout			[Optional] default to 1000, defines the timeout between the opening and the rendering of the url by nightmare
-+ page_size 		[Optional] default to 'A4', accepts options are A3, A4, A5, Legal, Letter or Tabloid
-+ landscape			[Optional] default to 0, defines whether rendering pdf in landscape mode
-+ print_background	[Optional] default to 1, defines whether printing background
-+ margins_type		[Optional] default to 1, defines which margins to use. Uses 0 for default margin, 1 for no margin, and 2 for minimum margin.
-+ script 			[Optional] default to DEFAULT_RENDER_SCRIPT, defines which render script to use.
++ paperformat 		[Required] default to 'A4', examples: "5in*7.5in", "10cm*20cm", "A4", "Letter"
++ zoom              [Optional] default to 1.
++ script 			[Optional] default to DEFAULT_RASTERIZE_SCRIPT, defines which render script to use.
 + temp_dir 			[Optional] default to DEFAULT_TEMP_DIR, defines which temp dir to use.
 
 
-## Model use for saving PDF
+## Model used for saving PDF
 
 When using `save(filename, title='', description='')` method of `PDFGenerator`, the following model is used:
 
@@ -88,8 +109,8 @@ Add your settings to your main django settings file. The settings are set by def
     PDF_GENERATOR = {
         'UPLOAD_TO': 'pdfs',
         'PHANTOMJS_BIN_PATH': 'phantomjs',
-        'DEFAULT_RENDER_SCRIPT': os.path.join(PDF_GENERATOR_DIR, 'render_pdf.js'),
-        'TEMP_DIR': os.path.join(PDF_GENERATOR_DIR, 'temp'),
+        'DEFAULT_RASTERIZE_SCRIPT': os.path.join(PDF_GENERATOR_DIR, 'rasterize.js'),
+        'DEFAULT_TEMP_DIR': os.path.join(PDF_GENERATOR_DIR, 'temp'),
         'TEMPLATES_DIR': os.path.join(PDF_GENERATOR_DIR, 'templates/pdf_generator')
     }
 
@@ -103,14 +124,19 @@ Define the directory or the function to be used when saving PDFs, default to `pd
 Define the path to Phantomjs binary, default to `phantomjs`.
 
 
-### `DEFAULT_RENDER_SCRIPT`
+### `DEFAULT_RASTERIZE_SCRIPT`
 
-Define which render_script to use by default, default to `render_pdf.js` inside the package.
+Define which render_script to use by default, default to `rasterize.js` inside the package.
 
 
 ### `DEFAULT_TEMP_DIR`
 
-Define the directory to use for temporarily generated pdf by Nightmare. default to `pdf_temp`.
+Define the directory to use for temporarily generated pdf by PhantomJS. default to `pdf_temp`.
+
+
+### `TEMPLATES_DIR`
+
+Define the directory to use for temporarily generated HTML files by PhantomJS. default to `pdf_temp`.
 
 
 

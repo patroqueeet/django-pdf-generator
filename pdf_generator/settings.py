@@ -12,7 +12,7 @@ back to the defaults.
 """
 from __future__ import unicode_literals
 import os
-
+from django.conf import settings
 from django.test.signals import setting_changed
 
 
@@ -21,8 +21,8 @@ PDF_GENERATOR_DIR = os.path.dirname(os.path.abspath(__file__))
 DEFAULTS = {
     'UPLOAD_TO': 'pdfs',
     'PHANTOMJS_BIN_PATH': 'phantomjs',
-    'DEFAULT_RENDER_SCRIPT': os.path.join(PDF_GENERATOR_DIR, 'render_pdf.js'),
-    'TEMP_DIR': os.path.join(PDF_GENERATOR_DIR, 'temp'),
+    'DEFAULT_RASTERIZE_SCRIPT': os.path.join(PDF_GENERATOR_DIR, 'rasterize.js'),
+    'DEFAULT_TEMP_DIR': os.path.join(PDF_GENERATOR_DIR, 'temp'),
     'TEMPLATES_DIR': os.path.join(PDF_GENERATOR_DIR, 'templates/pdf_generator')
 }
 

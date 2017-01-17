@@ -1,8 +1,13 @@
-from .generators import PDFGenerator
+import os
+
 from django.template import loader
 from django.http import HttpResponse
+from django.urls import reverse
+
+from .generators import PDFGenerator
 from .settings import pdf_settings
 from .utils import get_random_filename
+
 
 
 def render_pdf(filename, request, template_name, context=None, content_type=None, status=None, using=None, options={}):
@@ -12,9 +17,9 @@ def render_pdf(filename, request, template_name, context=None, content_type=None
 	html_key = get_random_filename(20)
 	html_filename = '%s.html' % html_key
 	with open(os.path.join(pdf_settings.TEMPLATES_DIR, html_filename), 'w') as f:
-		f.write(foo)
+		f.write(content)
 		f.close()
 	relative_url = reverse('pdf_generator:pdf_html', kwargs={'html_key': html_key})
 	url = request.build_absolute_uri(relative_url)
 	pdf = PDFGenerator(url, **options)
-	return pdf.get_html_response(filename)
+	return pdf.get_http_response(filename)
