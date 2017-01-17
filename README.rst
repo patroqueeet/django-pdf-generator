@@ -54,7 +54,7 @@ Save it to the database using PdfDoc models :
                 title="pdf_generator on github",
                 description="Convert HTML to pdf with django using phantomjs")
 
-Get the PDf as a Django ContentFile named 'my\_pdf\_file.pdf' :
+Get the PDF as a Django ContentFile named 'my\_pdf\_file.pdf' :
 
 .. code:: python
 
