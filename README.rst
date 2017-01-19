@@ -28,6 +28,15 @@ Add ``pdf_generator`` to your INSTALLED\_APPS setting.
             'pdf_generator',
         )
 
+Add the ``pdf_generator`` below to your main urls.py
+
+.. code:: python
+
+        urlpatterns = [
+        ...
+        url(r'^pdf-generator/', include('pdf_generator.urls', namespace='pdf_generator')),
+        ...
+
 Put phantomjs binary on your path or set the path manually in your
 settings using ``PHANTOMJS_BIN_PATH`` settings (see below).
 
