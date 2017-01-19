@@ -31,7 +31,7 @@ Add `pdf_generator` to your INSTALLED_APPS setting.
     )
 ```
 
-Add the `pdf_generator` below to your main urls.py
+Add the `pdf_generator` urls below to your main urls.py
 
 
 ```python
