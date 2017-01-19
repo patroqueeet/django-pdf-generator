@@ -48,6 +48,7 @@ class PDFGenerator(object):
 		"""
 		command = [
 			pdf_settings.PHANTOMJS_BIN_PATH,
+			'--ssl-protocol=any',
 			self.script,
 			self.url,
 			self.filepath,

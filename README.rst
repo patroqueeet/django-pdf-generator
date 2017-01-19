@@ -1,4 +1,4 @@
-|django-pdf-generator v0.1.0 on PyPi| |MIT license| |Stable|
+|django-pdf-generator v0.1.3 on PyPi| |MIT license| |Stable|
 
 django-pdf-generator
 ====================
@@ -182,7 +182,7 @@ License
 
 The project is licensed under the MIT License.
 
-.. |django-pdf-generator v0.1.0 on PyPi| image:: https://img.shields.io/badge/pypi-0.1.0-green.svg
+.. |django-pdf-generator v0.1.3 on PyPi| image:: https://img.shields.io/badge/pypi-0.1.3-green.svg
    :target: https://pypi.python.org/pypi/django-pdf-generator
 .. |MIT license| image:: https://img.shields.io/badge/licence-MIT-blue.svg
 .. |Stable| image:: https://img.shields.io/badge/status-stable-green.svg

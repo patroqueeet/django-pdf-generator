@@ -15,7 +15,7 @@ except Exception:
 
 setup(
     name='django_pdf_generator',
-    version='0.1.0',
+    version='0.1.3',
     description='Generate PDF from HTML with django',
     long_description=long_description,
     url='https://github.com/charlesthk/django-pdf-generator',

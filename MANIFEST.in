@@ -1,1 +1,3 @@
-include pdf_generator/*.js
+include pdf_generator/rasterize.js
+include pdf_generator/templates/pdf_generator/empty.txt
+include pdf_generator/temp/empty.txt
