@@ -2,7 +2,7 @@ import os
 
 from django.template import loader
 from django.http import HttpResponse
-from django.urls import reverse
+from django.core.urlresolvers import reverse
 
 from .generators import PDFGenerator
 from .settings import pdf_settings
