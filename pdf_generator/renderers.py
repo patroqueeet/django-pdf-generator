@@ -11,7 +11,7 @@ from .utils import get_random_filename
 
 
 def render_pdf(filename, request, template_name, context=None, content_type=None, status=None, using=None, options={}):
-	content = loader.render_to_string(template_name, context, request, using=using)
+	content = loader.render_to_string(template_name, context=context, request=request, using=using)
 	if request.GET.get('html'):
 		return HttpResponse(content, content_type, status)
 	html_key = get_random_filename(20)
